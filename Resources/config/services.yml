@@ -1,0 +1,8 @@
+parameters:
+    acme_badges.subscriber.class: Acme\BadgesBundle\Event\BadgesSubscriber
+
+services:
+    acme_badges.subscriber:
+        class: %acme_badges.subscriber.class%
+        tags:
+            - { name: kernel.event_subscriber }
