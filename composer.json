@@ -1,5 +1,5 @@
 {
-    "name": "PROCERGS/login-cidadao-badges-template",
+    "name": "procergs/login-cidadao-badges-template",
     "type": "symfony-bundle",
     "description": "Template project for the badges system.",
     "keywords": ["template", "login-cidadao", "badges"],
