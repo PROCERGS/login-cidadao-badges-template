@@ -4,6 +4,7 @@ namespace Acme\BadgesBundle\Event;
 
 use PROCERGS\LoginCidadao\BadgesBundle\Model\AbstractBadgesEventSubscriber;
 use PROCERGS\LoginCidadao\BadgesBundle\Event\EvaluateBadgesEvent;
+use Acme\BadgesBundle\Model\AcmeBadge;
 
 class BadgesSubscriber extends AbstractBadgesEventSubscriber
 {
@@ -11,7 +12,7 @@ class BadgesSubscriber extends AbstractBadgesEventSubscriber
     public function onBadgeEvaluate(EvaluateBadgesEvent $event)
     {
         if (rand(1,10) % 2 === 0) {
-            $event->registerBadge(new Model\AcmeBadge($this->getName(), 'random_even', true));
+            $event->registerBadge(new AcmeBadge($this->getName(), 'random_even', true));
         }
     }
 
