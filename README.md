@@ -60,11 +60,12 @@ class AcmeBadge implements BadgeInterface
 ### Event Subscriber: where the magic happens
 
 Now that we can represent our badge, let's create the class that will respond the Badge System's events.
-Luckly all the boring stuff is already done by the `PROCERGS\LoginCidadao\BadgesBundle\Model\AbstractBadgesEventSubscriber` abstract class. All we have to do is implement the missing methods and handle the event as needed to validate our badge.
+Luckly all the boring stuff is already done by the `PROCERGS\LoginCidadao\BadgesBundle\Model\AbstractBadgesEventSubscriber` abstract class. All we have to do is implement the missing methods and handle the event as needed to validate our badges.
 
 The badge validation is done in the `onBadgeEvaluate(EvaluateBadgesEvent)` method and that's where the hard work should be done. This is defined in the `AbstractBadgesEventSubscriber`.
 
-We also need the `getName()` method to tell the Badges System what's the "namespace" of your badges and finally the `getAvailableBadges()` method will tell the application what badges are provided by this bundle.
+We also need the `__construct()` method that will tell the application what badges are provided by this bundle. In this example we won't use translation but you could simply inject the `@translator` service into this class and translate the messages in this method.
+Also in the constructor you have to setup your badge's "namespace". In this example we used `acme_badges`.
 
 ``` php
 <?php
@@ -78,6 +79,12 @@ use Acme\BadgesBundle\Model\AcmeBadge;
 class BadgesSubscriber extends AbstractBadgesEventSubscriber
 {
 
+    public function __construct()
+    {
+        $this->registerBadge('random_even', 'A person with this badge had the luck of getting an even number in rand(1,10)');
+        $this->setName('acme_badges');
+    }
+
     public function onBadgeEvaluate(EvaluateBadgesEvent $event)
     {
         if (rand(1,10) % 2 === 0) {
@@ -85,34 +92,7 @@ class BadgesSubscriber extends AbstractBadgesEventSubscriber
         }
     }
 
-    public function getName()
-    {
-        return 'acme_badges';
-    }
-
-    public function getAvailableBadges()
-    {
-        return array(
-            'random_even' => array(
-                'description' => 'A person with this badge had the luck of getting an even number in rand(1,10)'
-            )
-        );
-    }
-
 }
-```
-
-Note that the structure of the `getAvailableBadges()` is pretty simple and consist of and array containing the "metadata" of the badges in another array indexed by the badge's name. Another example would be:
-
-``` php
-return array(
-    'my_badge' => array(
-        'description' => "Here you type a description telling the users how to achieve the badge or something."
-    ),
-    'another_badge' => array(
-        'description' => "Here goes another description."
-    )
-);
 ```
 
 ### Almost done: services.yml
